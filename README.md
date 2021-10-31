@@ -13,9 +13,9 @@
 This is project is a simple TODO App made with Flask for learning purposes.
 
 ### Features
-Features included:
 - Blueprints
 - Jinja2
+- Bootstrap
 - Firestore DB
 - User Signup.
 - User Login.
