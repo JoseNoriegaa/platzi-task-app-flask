@@ -1,0 +1,64 @@
+<nav class="navbar navbar-default">
+  <div class="container">
+
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">
+        Platzi Tasks
+      </a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      {% if current_user.is_authenticated %}
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="{{ url_for('tasks.index') }}">
+              Lista
+            </a>
+          </li>
+
+          <li>
+            <a href="{{ url_for('tasks.create') }}">
+              Crear tarea
+            </a>
+          </li>
+        </ul>
+      {% endif %}
+
+      <ul class="nav navbar-nav navbar-right" style="display: flex; align-items: center">
+        {% if current_user.is_authenticated %}
+          <li class="username">
+            <span role="username">
+              {{ current_user.id | upper }}
+            </span>
+          </li>
+
+          <li>
+            <a href="{{ url_for('auth.logout') }}">
+              Cerrar sesión
+            </a>
+          </li>
+        {% else %}
+          <li>
+            <a href="{{ url_for('auth.signup') }}">
+              Registrarse
+            </a>
+          </li>
+
+          <li>
+            <a href="{{ url_for('auth.login') }}">
+              Iniciar sesión
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>

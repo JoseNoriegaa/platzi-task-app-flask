@@ -1,0 +1,124 @@
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+{% macro render_task(task, status_form, delete_form) %}
+  {% set task_dict = task.to_dict() %}
+
+  {% if task_dict.status == 'No comenzada' %}
+    {% set status_class = 'primary' %}
+
+  {% elif task_dict.status == 'En proceso' %}
+    {% set status_class = 'warning' %}
+
+  {% elif task_dict.status == 'Completada' %}
+    {% set status_class = 'success' %}
+
+  {% else %}
+    {% set status_class = 'info' %}
+
+  {% endif %}
+
+  <div class="panel panel-{{ status_class }}">
+    <div
+      class="panel-heading"
+      data-toggle="collapse"
+      href="#collapsible-{{ task.id }}"
+      role="button"
+      aria-expanded="false"
+      aria-controls="collapsible-{{ task.id }}"
+    >
+
+      <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
+        <h3 class="panel-title">
+          {{ task_dict.title }}
+        </h3>
+
+        <div class="btn-group">
+          <form
+            action="{{ url_for('tasks.update_status', task_id=task.id) }}"
+            method="post"
+            id="form_status_{{ task.id }}"
+          >
+            <input
+              type="hidden"
+              value="{{ value }}"
+              id="input_status_{{ task.id }}"
+              name="status"
+            />
+            {{ status_form.csrf_token(hidden=True) }}
+          </form>
+
+          <button
+            type="button"
+            class="btn btn-default dropdown-toggle"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            {{ task_dict.status }}
+            <span class="caret"></span>
+          </button>
+
+          <ul class="dropdown-menu">
+            {% for value, label in status_form.status.choices %}
+              <li
+                onclick="$('#input_status_{{ task.id }}').val('{{ value }}'); $('#form_status_{{ task.id }}').submit()"
+              >
+                <span>
+                  {{ label }}
+                </span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="collapse" id="collapsible-{{ task.id }}">
+
+      <div class="panel-body">
+        <b>Descripción</b>
+        <br>
+        {{ task_dict.description }}
+
+        <div
+          style="
+            display: flex;
+            margin-top: 10px;
+            padding-top: 10px;
+            flex-direction: row;
+            justify-content: flex-end;
+            border-top: 1px #cccccc solid;
+          "
+        >
+          <a
+            href="{{ url_for('tasks.update', task_id=task.id) }}"
+            role="button"
+            class="btn btn-default"
+            style="margin-right: 5px"
+          >
+            Actualizar
+          </a>
+
+          <form
+            action="{{ url_for('tasks.delete', task_id=task.id) }}"
+            method="post"
+          >
+            {{ delete_form.csrf_token(hidden=True) }}
+
+            <button
+              type="submit"
+              class="btn btn-danger"
+            >
+              Eliminar
+            </button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+{% endmacro %}

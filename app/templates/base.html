@@ -1,0 +1,45 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block title %}Flask Platzi | {% endblock %}
+
+{% block styles %}
+  {{ super() }}
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock %}
+
+{% block body %}
+  {% block navbar %}
+    {% include 'navbar.html' %}
+  {% endblock %}
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+
+        {% if category == 'message' %}
+          {% set category = 'success' %}
+        {% endif %}
+
+        <div class="container alert alert-{{category}} alert-dismissable">
+          <button
+            type="button"
+            data-dismiss="alert"
+            class="close"
+          >
+            &times;
+          </button>
+          {{ message }}
+        </div>
+
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}
+  {% endblock %}
+
+  {% block scripts %}
+    {{ super() }}
+  {% endblock %}
+{% endblock %}

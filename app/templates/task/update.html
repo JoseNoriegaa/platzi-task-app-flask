@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}
+  {{ super() }}
+  Actualizar tarea
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h2>
+      Actualizar tarea #{{ task.id }}
+    </h2>
+
+    {{ wtf.quick_form(task_form) }}
+  </div>
+{% endblock %}

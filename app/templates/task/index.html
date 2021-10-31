@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% import 'task/macros.html' as task_macros %}
+
+{% block title %}
+  {{ super() }}
+  Tareas
+{% endblock %}
+
+{% block styles %}
+  {{ super() }}
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/task/main.css') }}">
+{% endblock %}
+
+{% block content %}
+
+  <div class="container">
+    <h1>
+      Bienvenido
+      <span role="username">
+        {{ current_user.id | upper }}
+      </span>
+    </h1>
+
+    <div
+      style="
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        margin-top: 20px;
+        margin-bottom: 10px
+      "
+    >
+      <h3 style="flex: 1; margin: 0">
+        Tareas
+      </h3>
+
+      <div style="float: right">
+        <a
+          href="{{ url_for('tasks.create') }}"
+          role="button"
+          class="btn btn-primary"
+        >
+          Crear tarea
+        </a>
+      </div>
+    </div>
+
+
+    {% if tasks | length == 0 %}
+      <div class="alert alert-info" role="alert">
+        No hay tareas registradas.
+      </div>
+
+    {% endif %}
+
+    <ul id="tasks-container">
+      {% for task in tasks %}
+        {{ task_macros.render_task(task, update_status_form, delete_task_form) }}
+      {% endfor %}
+    </ul>
+
+  </div>
+
+{% endblock %}
